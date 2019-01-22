@@ -51,7 +51,8 @@ public class TransactionController {
   public ResponseEntity<Transaction> returnBookTransaction(@PathVariable(name="transaction-id") Long transactionId){
     Transaction transaction = transactionRepository.findById(transactionId).get();
     transaction.setDateOfReturn(LocalDateTime.now());
-    return ResponseEntity.ok().body(transaction);
+  //  return ResponseEntity.ok().body(transaction);
+    return ResponseEntity.ok().body(transactionRepository.save(transaction));
   }
 
 }

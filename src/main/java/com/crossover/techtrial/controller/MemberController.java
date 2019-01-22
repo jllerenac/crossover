@@ -34,7 +34,11 @@ public class MemberController {
    */
   @PostMapping(path = "/api/member")
   public ResponseEntity<Member> register(@RequestBody Member p) {
-    return ResponseEntity.ok(memberService.save(p));
+	  String email = p.getEmail();
+	  Member member = memberService.findByEmail(email);
+	      if (member != null) {
+	    	  return ResponseEntity.ok(memberService.save(null));
+	    } else { return ResponseEntity.ok(memberService.save(p)); }
   }
   
   /*

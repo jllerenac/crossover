@@ -17,6 +17,8 @@ public interface MemberService {
   
   public Member findById(Long memberId);
   
+  public Member findByEmail(String email);
+  
   public List<Member> findAll();
   
 }

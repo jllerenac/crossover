@@ -31,6 +31,13 @@ public class MemberServiceImpl implements MemberService{
     }else return null;
   }
   
+  public Member findByEmail(String email) {
+	    Optional<Member> optionalMember = memberRepository.findByEmail(email);
+	    if (optionalMember.isPresent()) {
+	      return optionalMember.get();
+	    }else return null;
+	  }
+  
   public List<Member> findAll() {
     return memberRepository.findAll();
   }
