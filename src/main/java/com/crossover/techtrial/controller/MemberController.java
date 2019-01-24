@@ -4,10 +4,12 @@
 package com.crossover.techtrial.controller;
 
 import java.time.LocalDateTime;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,14 +35,21 @@ public class MemberController {
    * PLEASE DO NOT CHANGE SIGNATURE OR METHOD TYPE OF END POINTS
    */
   @PostMapping(path = "/api/member")
-  public ResponseEntity<Member> register(@RequestBody Member p) {
+  public String register(@RequestBody Member p) {
 	  String email = p.getEmail();
+	  String mensaje;
 	  Member member = memberService.findByEmail(email);
 	      if (member != null) {
-	    	  return ResponseEntity.ok(memberService.save(null));
-	    } else { return ResponseEntity.ok(memberService.save(p)); }
+	    	  mensaje = " Email already exists";
+	    	  return mensaje;
+	    } else {
+	    	ResponseEntity.ok(memberService.save(p));
+	    	mensaje = "Member has been registered";  
+	    	return mensaje; }
   }
-  
+  public String return_message(String message) {
+	  return message;
+  }
   /*
    * PLEASE DO NOT CHANGE API SIGNATURE OR METHOD TYPE OF END POINTS
    */
