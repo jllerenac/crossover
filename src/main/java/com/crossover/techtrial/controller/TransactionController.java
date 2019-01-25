@@ -6,6 +6,7 @@ package com.crossover.techtrial.controller;
 import java.time.LocalDateTime;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,8 @@ import com.crossover.techtrial.model.Transaction;
 import com.crossover.techtrial.repositories.BookRepository;
 import com.crossover.techtrial.repositories.MemberRepository;
 import com.crossover.techtrial.repositories.TransactionRepository;
-
+import com.crossover.techtrial.service.MemberService;
+import com.crossover.techtrial.service.TransactionService;
 /**
  * @author kshah
  *
@@ -26,6 +28,8 @@ import com.crossover.techtrial.repositories.TransactionRepository;
 @RestController
 public class TransactionController {
   
+  @Autowired TransactionService transactionService;
+	
   @Autowired TransactionRepository transactionRepository;
   
   @Autowired BookRepository bookRepository;
@@ -35,13 +39,14 @@ public class TransactionController {
    * PLEASE DO NOT CHANGE SIGNATURE OR METHOD TYPE OF END POINTS
    * Example Post Request :  { "bookId":1,"memberId":33 }
    */
-  @PostMapping(path = "/api/transaction")
+@SuppressWarnings("unchecked")
+@PostMapping(path = "/api/transaction")
   public ResponseEntity<Transaction> issueBookToMember(@RequestBody Map<String, Long> params){
-    
     Long bookId = params.get("bookId");
     Long memberId = params.get("memberId");
+    Transaction existingt = transactionService.findTransaction(bookId);
+    if (existingt != null) { return (ResponseEntity<Transaction>) ResponseEntity.status(HttpStatus.FORBIDDEN);}
     Transaction transaction = new Transaction();
- //   transactionRepository.findById(id)
     transaction.setBook(bookRepository.findById(bookId).orElse(null));
     transaction.setMember(memberRepository.findById(memberId).get());
     transaction.setDateOfIssue(LocalDateTime.now());    
