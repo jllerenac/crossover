@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.crossover.techtrial.model.Member;
 import com.crossover.techtrial.model.Transaction;
 import com.crossover.techtrial.repositories.BookRepository;
 import com.crossover.techtrial.repositories.MemberRepository;
@@ -39,6 +41,7 @@ public class TransactionController {
     Long bookId = params.get("bookId");
     Long memberId = params.get("memberId");
     Transaction transaction = new Transaction();
+ //   transactionRepository.findById(id)
     transaction.setBook(bookRepository.findById(bookId).orElse(null));
     transaction.setMember(memberRepository.findById(memberId).get());
     transaction.setDateOfIssue(LocalDateTime.now());    

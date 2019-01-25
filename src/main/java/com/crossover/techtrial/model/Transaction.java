@@ -47,6 +47,8 @@ public class Transaction implements Serializable {
   @Column(name="date_of_return")
   LocalDateTime dateOfReturn;
 
+  Long findTransaction;
+  
   public Long getId() {
     return id;
   }
