@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.crossover.techtrial.dto.TopMemberDTO;
 import com.crossover.techtrial.model.Member;
+import com.crossover.techtrial.model.Transaction;
 import com.crossover.techtrial.service.MemberService;
 
 /**
@@ -34,18 +35,17 @@ public class MemberController {
   /*
    * PLEASE DO NOT CHANGE SIGNATURE OR METHOD TYPE OF END POINTS
    */
-  @PostMapping(path = "/api/member")
-  public String register(@RequestBody Member p) {
+@PostMapping(path = "/api/member")
+
+  public ResponseEntity<Member> register(@RequestBody Member p) {
 	  String email = p.getEmail();
-	  String mensaje;
 	  Member member = memberService.findByEmail(email);
 	      if (member != null) {
-	    	  mensaje = " Email already exists";
-	    	  return mensaje;
+	    	  System.out.println("Email already exists"); 
+	    	  return null;
 	    } else {
-	    	ResponseEntity.ok(memberService.save(p));
-	    	mensaje = "Member has been registered";  
-	    	return mensaje; }
+	    	System.out.println("Member registered"); 
+	    	return ResponseEntity.ok(memberService.save(p)); }
   }
   public String return_message(String message) {
 	  return message;

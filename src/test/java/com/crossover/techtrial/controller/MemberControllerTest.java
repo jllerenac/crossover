@@ -47,15 +47,15 @@ public class MemberControllerTest {
   }
   
   @Test
-  public void testMemberRegsitrationsuccessful() throws Exception {
+  public void testMemberRegistrationsuccessful() throws Exception {
     HttpEntity<Object> member = getHttpEntity(
-        "{\"name\": \"test 1\", \"email\": \"test10000000000001@gmail.com\"," 
+        "{\"name\": \"test\", \"email\": \"test01@gmail.com\"," 
             + " \"membershipStatus\": \"ACTIVE\",\"membershipStartDate\":\"2018-08-08T12:12:12\" }");
     
     ResponseEntity<Member> response = template.postForEntity(
-        "/api/member", member, Member.class);
+        "/api/member",member,Member.class); 
     
-    Assert.assertEquals("test 1", response.getBody().getName());
+    Assert.assertEquals("test", response.getBody().getName());
     Assert.assertEquals(200,response.getStatusCode().value());
     
     //cleanup the user

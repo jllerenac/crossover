@@ -31,7 +31,7 @@ public class Member implements Serializable{
   @Column(name = "name")
   String name;
 
-  @Column(name = "email")
+  @Column(name = "email", unique = true)
   String email;
   
   @Enumerated(EnumType.STRING)

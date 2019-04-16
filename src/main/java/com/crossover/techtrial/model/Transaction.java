@@ -23,9 +23,6 @@ import javax.persistence.Table;
 @Table(name="transaction")
 public class Transaction implements Serializable {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 8951221480021840448L;
   
   @Id
