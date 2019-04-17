@@ -46,7 +46,7 @@ public class MemberController {
 	      if (member != null) {
 	    	  System.out.println("---------- CROSSOVER MESSAGE: Email already exists ----------"); 
 	    	  return null;
-	    } else {
+	    } else { 
 	    	System.out.println("---------- CROSSOVER MESSAGE: Member registered ----------"); 
 	    	return ResponseEntity.ok(memberService.save(p)); }
   }
