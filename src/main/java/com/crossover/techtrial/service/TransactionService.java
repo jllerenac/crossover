@@ -8,5 +8,6 @@ public interface TransactionService {
   
   public Transaction findTransaction(Long id_book);
   
+ // public Transaction findTransactionByBookMember(Long id_book, Long id_member);
  
 }

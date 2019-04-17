@@ -4,10 +4,9 @@
 package com.crossover.techtrial.controller;
 
 import java.time.LocalDateTime;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.crossover.techtrial.dto.TopMemberDTO;
 import com.crossover.techtrial.model.Member;
 import com.crossover.techtrial.model.Transaction;
+import com.crossover.techtrial.repositories.MemberRepository;
 import com.crossover.techtrial.service.MemberService;
 
 /**
@@ -31,6 +31,9 @@ import com.crossover.techtrial.service.MemberService;
 public class MemberController {
   
   @Autowired
+  MemberRepository memberRepository;
+	
+  @Autowired
   MemberService memberService;
   /*
    * PLEASE DO NOT CHANGE SIGNATURE OR METHOD TYPE OF END POINTS
@@ -41,10 +44,10 @@ public class MemberController {
 	  String email = p.getEmail();
 	  Member member = memberService.findByEmail(email);
 	      if (member != null) {
-	    	  System.out.println("Email already exists"); 
+	    	  System.out.println("---------- CROSSOVER MESSAGE: Email already exists ----------"); 
 	    	  return null;
 	    } else {
-	    	System.out.println("Member registered"); 
+	    	System.out.println("---------- CROSSOVER MESSAGE: Member registered ----------"); 
 	    	return ResponseEntity.ok(memberService.save(p)); }
   }
   public String return_message(String message) {
@@ -83,12 +86,13 @@ public class MemberController {
   public ResponseEntity<List<TopMemberDTO>> getTopMembers(
       @RequestParam(value="startTime", required=true) @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startTime,
       @RequestParam(value="endTime", required=true) @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") LocalDateTime endTime){
-    List<TopMemberDTO> topDrivers = new ArrayList<>();
-    /**
-     * Your Implementation Here. 
-     * 
-     */
+    // checks if startDate is >= than endTime
+    if (startTime.isAfter(endTime) ) {
+    	System.out.println("---------- CROSSOVER MESSAGE: Start date is later than End date ----------");
+        return ResponseEntity.badRequest().build();
+    }
     
+    List<TopMemberDTO> topDrivers = memberRepository.findTop5MemberList(startTime, endTime, PageRequest.of(0,5));
     return ResponseEntity.ok(topDrivers);
     
   }

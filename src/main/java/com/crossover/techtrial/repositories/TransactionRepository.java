@@ -21,8 +21,19 @@ import org.springframework.data.jpa.repository.*;
 @RestResource(exported = false)
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
     @Query(
-    value="select id from crosslibrary.transaction t where book_id = ?1 and date_of_return is null;", 
+    value="select * from crosslibrary.transaction t where book_id = ?1 and date_of_return is null;", 
     nativeQuery = true)
 	Optional<Transaction> findTransaction(Long id_book);
- 
+
+    @Query(
+    value="select count(*) from crosslibrary.transaction t where member_id = ?1 and date_of_return is null;", 
+    nativeQuery = true)
+	long findMoreThanFiveTransactions(Long id_member);
+    
+    @Query(
+    value="select * from crosslibrary.transaction t where book_id = ?1 and member_id = ?2 "
+    		+ "and date_of_return is not null;", 
+    nativeQuery = true)
+    Optional<Transaction> findExistingTransaction(Long id_book, Long id_member);
+    
 }
