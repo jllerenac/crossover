@@ -35,7 +35,7 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Lon
           "    t.dateOfReturn BETWEEN ?1 AND ?2 " +
           "GROUP BY " +
           "    t.member.id, t.member.name, t.member.email " +
-          "ORDER BY " +
+          "ORDER BY " + 
           "    COUNT(t.member.id) DESC")
   List<TopMemberDTO> findTop5MemberList(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
   
