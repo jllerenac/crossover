@@ -92,7 +92,7 @@ public class MemberController {
         return ResponseEntity.badRequest().build();
     }
      
-    List<TopMemberDTO> topDrivers = memberRepository.findTop5MemberList(startTime, endTime, PageRequest.of(0,5));
+    List<TopMemberDTO> topDrivers = memberRepository.Top5Members(startTime, endTime);
     return ResponseEntity.ok(topDrivers);
     
   }

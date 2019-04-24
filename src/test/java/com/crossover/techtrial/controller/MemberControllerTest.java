@@ -47,7 +47,7 @@ public class MemberControllerTest {
   }
   
   @Test
-  public void testMemberRegistrationsuccessful() throws Exception {
+  public void testMemberRegistrationSuccessful() throws Exception {
     HttpEntity<Object> member = getHttpEntity(
         "{\"name\": \"test\", \"email\": \"test01@gmail.com\"," 
             + " \"membershipStatus\": \"ACTIVE\",\"membershipStartDate\":\"2018-08-08T12:12:12\" }");
@@ -62,6 +62,63 @@ public class MemberControllerTest {
     memberRepository.deleteById(response.getBody().getId());
   }
 
+  @Test
+  public void testMemberWrongFirstCharacterValidation() throws Exception {
+	  HttpEntity<Object> member = getHttpEntity(
+		        "{\"name\": \"1Jose Llerena\", \"email\": \"test01@gmail.com\"," 
+		            + " \"membershipStatus\": \"ACTIVE\",\"membershipStartDate\":\"2018-08-08T12:12:12\" }");
+    
+    ResponseEntity<Member> response = template.postForEntity(
+        "/api/member/",member,Member.class); 
+    
+    Assert.assertEquals(400,response.getStatusCode().value());
+    
+  }
+  
+  @Test
+  public void testMemberShortNameValidation() throws Exception {
+	  HttpEntity<Object> member = getHttpEntity(
+		        "{\"name\": \"J\", \"email\": \"test01@gmail.com\"," 
+		            + " \"membershipStatus\": \"ACTIVE\",\"membershipStartDate\":\"2018-08-08T12:12:12\" }");
+    
+    ResponseEntity<Member> response = template.postForEntity(
+        "/api/member/",member,Member.class); 
+    
+    Assert.assertEquals(400,response.getStatusCode().value());
+    
+  }
+  
+  @Test
+  public void testMemberDuplicatedEmail() throws Exception {
+      HttpEntity<Object> memberOne = getHttpEntity(
+              "{\"name\": \"Jose Llerena\", \"email\": \"josellerenacarpio@gmail.com\","
+                      + " \"membershipStatus\": \"ACTIVE\",\"membershipStartDate\":\"2019-01-15T15:18:45\" }");
+
+      HttpEntity<Object> memberTwo = getHttpEntity(
+              "{\"name\": \"Jose Alfredo Llerena\", \"email\": \"josellerenacarpio@gmail.com\","
+                      + " \"membershipStatus\": \"ACTIVE\",\"membershipStartDate\":\"2019-01-15T15:19:45\" }");
+
+      ResponseEntity<Member> responseOne= template.postForEntity("/api/member", memberOne, Member.class);
+      Assert.assertEquals("Jose Llerena", responseOne.getBody().getName());
+      Assert.assertEquals(200, responseOne.getStatusCode().value());
+
+      ResponseEntity<Member> responseTwo = template.postForEntity("/api/member", memberTwo, Member.class);
+      Assert.assertEquals(200, responseTwo.getStatusCode().value());
+
+      //cleanup the user
+      memberRepository.deleteById(responseOne.getBody().getId());
+  }
+  
+  @Test
+  public void testDateIssuedLaterThanReturnedDate() throws Exception {
+    
+    ResponseEntity<Member[]> response = template.getForEntity(
+        "/api/member/top-member?startTime=2019-01-21T09:25:12&endTime=2019-01-11T09:25:12",Member[].class); 
+    
+    Assert.assertEquals(400,response.getStatusCode().value());
+    
+  }
+  
   private HttpEntity<Object> getHttpEntity(Object body) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);

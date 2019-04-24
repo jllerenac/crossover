@@ -13,6 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 
 /**
  * @author kshah
@@ -29,6 +32,8 @@ public class Member implements Serializable{
   Long id;
 
   @Column(name = "name")
+  @Length(min = 2, max = 100, message = "Length must be between 2 and 100")
+  @Pattern(regexp = "^[a-zA-Z]+[a-zA-z ]+$", message = "The name must start with letter")
   String name;
 
   @Column(name = "email", unique = true)

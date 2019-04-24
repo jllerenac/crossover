@@ -27,16 +27,11 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Lon
   List<Member> findAll();
   
   @Query("SELECT " +
-          "    new com.crossover.techtrial.dto.TopMemberDTO(t.member.id, t.member.name, t.member.email, COUNT(t.member.id)) " +
-          "FROM " +
-          "    Transaction t " +
-          "WHERE " +
-          "    t.dateOfIssue BETWEEN ?1 AND ?2 AND " +
-          "    t.dateOfReturn BETWEEN ?1 AND ?2 " +
-          "GROUP BY " +
-          "    t.member.id, t.member.name, t.member.email " +
-          "ORDER BY " + 
-          "    COUNT(t.member.id) DESC")
-  List<TopMemberDTO> findTop5MemberList(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
+          "new com.crossover.techtrial.dto.TopMemberDTO(t.member.id, t.member.name, t.member.email, COUNT(t.member.id)) " +
+          "FROM Transaction t WHERE t.dateOfIssue BETWEEN ?1 AND ?2 AND " +
+          "t.dateOfReturn BETWEEN ?1 AND ?2 " +
+          "GROUP BY t.member.id, t.member.name, t.member.email " +
+          "ORDER BY COUNT(t.member.id) DESC")
+  List<TopMemberDTO> Top5Members(LocalDateTime startTime, LocalDateTime endTime);
   
 }
