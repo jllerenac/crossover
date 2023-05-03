@@ -37,7 +37,8 @@ The Cross-Library application uses liquibase for Database changes. In case you n
 Cross-Library Application:
     To start the application run CrossLibraryApplication.java main method from your IDE.
 
-#Production Environment:
+# Production Environment:
+
 This is how we are going to run and evaluate your submission, so please make sure to run below steps before submitting your answer.
 
 * Make sure to run unit tests, check code coverage, ensure the application is compiling and all dependencies are included.
